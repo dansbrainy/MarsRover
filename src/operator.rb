@@ -32,9 +32,8 @@ class Operator
 
   end
 
-  def update(index)
-    my_hash.each { |k, v| my_hash[k] = v.upcase } 
-    @grid.occupied.any? {|h| h['index'] == index }
+  def output_rovers
+    puts(@grid.occupied)
   end
 
   def start_rovers
