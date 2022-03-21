@@ -2,6 +2,7 @@
 
 - Go to main directory 'src' and run the script 'ruby operator.rb'
 - Run the script 'Get-Content input.in | ruby operator.rb' to run with the test input
+- Run the script 'Get-Content input.in | ruby operator.rb > output.out' to save the output
 
 # TESTING
 
