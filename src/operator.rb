@@ -21,15 +21,14 @@ class Operator
   def create_rover(index, coord_x, coord_y, direction)
 
     begin
-      if @grid.occupied.any? {|h| h['x'] == coord_x && h['y'] == coord_y}
-        puts "There is a rover occupying the space --> (#{coord_x}, #{coord_y})"
-        puts "---------------------------------------------"
-      else
-        @rover = Rover.new(index, coord_x.to_i, coord_y.to_i, direction.to_s)
-        @grid.occupied.append('index'=> index, 'x'=> coord_x, 'y'=> coord_y, 'd' => direction)
-      end
+      @rover = Rover.new(index, coord_x.to_i, coord_y.to_i, direction.to_s)
+      @grid.occupied.append('index'=> index, 'x'=> coord_x.to_i, 'y'=> coord_y.to_i, 'd' => direction)
     end
 
+  end
+
+  def update_input_coordinates(index, coord_x, coord_y, direction)
+    @grid.occupied.select { |h| h['index'] == index}.map{ |r| r.update( { 'index' => index, 'x' => coord_x, 'y' => coord_y, 'd' => direction} ) }
   end
 
   def output_rovers
@@ -39,11 +38,11 @@ class Operator
   def start_rovers
     """This is the entry point for starting the rover"""
 
-    STDIN.each_slice(2).each_with_index do |lines, index|
+    ARGF.each_slice(2).each_with_index do |lines, index|
       position_x, position_y, direction = lines[0].split
 
-      unless @grid.has_scope?(position_x.to_i, position_y.to_i, direction.to_s)
-        puts "Rover co-ordinates out of scope: rover #{index} --> (#{position_x}, #{position_y}, #{direction})"
+      unless @grid.has_scope?(position_x.to_i, position_y.to_i, direction.to_s) and @grid.space_is_not_occupied?(position_x.to_i, position_y.to_i)
+        puts "Rover co-ordinates out of valid scope: rover #{index} --> (#{position_x}, #{position_y}, #{direction})"
         next
       end
 
@@ -57,7 +56,10 @@ class Operator
       end
 
       next unless @rover.id != -1
-      @rover.output
+      if update_input_coordinates(index, @rover.get_x, @rover.get_y, @rover.get_direction) 
+        @rover.output 
+      end
+      output_rovers
     end
   end
 
@@ -75,6 +77,7 @@ class Operator
       @rover.id = -1
       return false
     end
+
   end
 end
 

@@ -9,6 +9,14 @@ class Grid
     @occupied = []
   end
 
+  def space_is_not_occupied?(coord_x, coord_y)
+    if @occupied.any? {|h| h['x'] == coord_x.to_i && h['y'] == coord_y.to_i}
+      puts "There is a rover occupying the space --> (#{coord_x}, #{coord_y})"
+      return false
+    else
+      return true
+    end
+  end
 
   # Function to check if the rover co-ordinates input are within the scope
   def has_scope?(position_x, position_y, direction)

@@ -8,6 +8,18 @@ class Rover
     @dir = Location.new(x: x, y: y, direction: direction)
   end
 
+  def get_x
+    return @dir.x if @dir.x
+  end
+
+  def get_y
+    return @dir.y if @dir.y
+  end
+
+  def get_direction
+    return @dir.direction if @dir.direction
+  end
+
   def output
     puts [@dir.x, @dir.y, @dir.direction].join(' ')
   end
